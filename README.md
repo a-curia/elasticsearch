@@ -462,5 +462,50 @@ Matrix and Pipeline are experimental and might change in the future releases.
 		}
 	}'
 
+The Cardinality Aggregation
 
+Cardinality, the number of unique values in a field. 
+Enable **fielddata** for text fields via mappings
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"age_count": {
+				"cardinality": {
+					"field": "age"
+				}			
+			}
+		}
+	}'
+
+
+Search - inverted index of the terms present in documents; the terms themselves can be hashed and stored in the index; which documents contain this term?
+
+Aggregation - actual value of fields present in documents; actual values of the terms are needed, hash values do not suffice; what is the value of this field for this document?
+
+Text field values are stored in an in-memory data structure called fielddata; fielddata is built on demand when a field is used for aggregations, sorting etc; fielddata on text fields take up lots of heap space; fielddata is disabled by default on text fields
+
+
+	curl -XPOST 'localhost:9200/products/_mapping/personal?pretty' -d'
+	{
+		"properties": {
+			"gender": {
+				"type": "text",
+				"fielddata": true		
+			}
+		}
+	}'
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"gender_count": {
+				"cardinality": {
+					"field": "gender"
+				}			
+			}
+		}
+	}'
 
