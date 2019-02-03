@@ -285,3 +285,12 @@ Term Frequency - how often does the term appear in the field? - more often, more
 Inverse document frequency - how often does the term appear in the index? - more often, less relevant
 
 Field-length norm - how log is the field which was searched - longer fields, less relevant
+
+Common terms queries with cutoff_frequency specified
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"common": {"reviews":{"query":"this is great", "cutoff_frequency":0.001}}}
+}'
+
+Cutoff Frequency - terms with a frequency of >0.1% are common terms
