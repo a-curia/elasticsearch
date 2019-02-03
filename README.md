@@ -624,3 +624,46 @@ Find the average age of male and female customers
 			}
 		}
 	}'
+
+
+#### The Filter and Filters Bucketing Aggregations
+
+- the "filter" aggregation to filter results
+- the "filters" aggregation to specify multiple filter matches
+
+The average age of customers in the state of Texas
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"aggs": {
+			"state": {
+				"filter": {"term": {"state":"texas"}},
+				"aggs": {
+					"average_age": {
+						"avg": {
+							"field": "age"
+						}
+					}
+				}			
+			}
+		}
+	}'
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"states": {
+				"filters": {
+					"filters": {
+						"washington": {
+							"match": {"state": "washington"}
+						},
+						"carolina": {
+							"match": {"state": "carolina"}
+						}
+					}	
+				}
+			}
+		}
+	}'
