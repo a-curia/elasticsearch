@@ -155,3 +155,16 @@ you can specify the query terms as:
 Search Using Query Params
 
 curl -XGET 'localhost:9200/customers/_search?q=wyoming&pretty'
+
+curl -XGET 'localhost:9200/customers/_search?q=wyoming&sort=age:desc&pretty'
+
+curl -XGET 'localhost:9200/customers/_search?q=state:kentucky&sort=age:asc&pretty'
+
+from index 10 get only 2 documents
+
+curl -XGET 'localhost:9200/customers/_search?q=state:kentucky&from=10&size=2&pretty'
+
+curl -XGET 'localhost:9200/customers/_search?q=state:kentucky&explain&pretty'
+
+
+
