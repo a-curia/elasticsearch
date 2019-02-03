@@ -318,3 +318,18 @@ curl -XGET 'localhost:9200/products/_search?pretty' -d'
 {
 "query": {"bool": {"must_not":{"match":{"street":"ditmas"}}, {"match":{"street":"avenue"}}}}
 }'
+
+
+Term Queries - the exact term needs to be found in the inverted index for indexed documents
+
+The terms found in the index may vary based on how you analyze them
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"bool": {"should":{"term":{"street":{"value":"ditmas"}}}, {"term":{"street":{"value":"avenue"}}}}}
+}'
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"bool": {"should":{"term":{"street":{"value":"ditmas", "boost":2.0}}}, {"term":{"street":{"value":"avenue"}}}}}
+}'
