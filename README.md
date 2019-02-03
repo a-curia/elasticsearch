@@ -244,3 +244,30 @@ curl -XGET 'localhost:9200/products/_search?pretty' -d'
 "_source": {"includes":["st*", "*n*"], "excludes": ["*der"]},
 "query": {"term": { "name": "gates" } }
 }
+
+### Full Text Searches - full text queries using:
+- match
+- match_phrase
+- match_phrase_prefix
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"match": {"name":"webster"}}
+}'
+
+Not an Exact Term Match - tweak other parameters to specify how the match is to be performed
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"match": {"name":{"query":"frank norris", "operator":"or"}}}
+}'
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"match_phrase": {"street":"tompkins place"}}
+}'
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"match_phrase_prefix": {"name":"no"}}
+}'
