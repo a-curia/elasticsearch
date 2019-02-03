@@ -166,5 +166,48 @@ curl -XGET 'localhost:9200/customers/_search?q=state:kentucky&from=10&size=2&pre
 
 curl -XGET 'localhost:9200/customers/_search?q=state:kentucky&explain&pretty'
 
+Search Using the Request Body
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"match_all": {} }
+}
+'
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"match_all": {} },
+"size": 3
+}
+'
+
+elasticsearch does stateless searches - maintains no open cursor or session for your search
+
+only document from index 5
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"match_all": {} },
+"from": 5,
+"size": 3
+}
+'
+
+search multiple indices
+
+curl -XGET 'localhost:9200/customers,products/_search?pretty'
+
+search and restrict multiple Doc Types
+
+curl -XGET 'localhost:9200/products/shoes,laptops/_search?pretty'
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"match_all": {} },
+"sort": { "age": {"order": "desc"}},
+"size": 20
+}
+
+Query params options are a subset of options available in the Request Body
 
 
