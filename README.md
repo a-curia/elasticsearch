@@ -271,3 +271,17 @@ curl -XGET 'localhost:9200/products/_search?pretty' -d'
 {
 "query": {"match_phrase_prefix": {"name":"no"}}
 }'
+
+
+Query clause to Relevance score : each document has a different relevance score based on the query clause
+
+Fuzzy searches might look at how similar the search term is to the word present in the document
+Term searches might look at the percentage of search terms that were found in the document
+
+TF/IDF algorithm - term frequency/inverse document frecquency
+
+Term Frequency - how often does the term appear in the field? - more often, more relevant
+
+Inverse document frequency - how often does the term appear in the index? - more often, less relevant
+
+Field-length norm - how log is the field which was searched - longer fields, less relevant
