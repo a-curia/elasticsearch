@@ -600,3 +600,27 @@ Document Counts are Approximate - Calculations aggregations across index shard c
 			}
 		}
 	}'
+
+
+#### Multi-level Nested Aggregations
+
+Find the average age of male and female customers
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"gender_bucker": {
+				"terms": {
+					"field": "gender"
+				},
+				"aggs": {
+					"average_age": {
+						"avg": {
+							"field": "age"
+						}
+					}
+				}			
+			}
+		}
+	}'
