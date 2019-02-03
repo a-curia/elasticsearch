@@ -509,3 +509,94 @@ Text field values are stored in an in-memory data structure called fielddata; fi
 		}
 	}'
 
+
+Implementing Bucketing Aggregations
+
+Logically group documents into buckets - analog to group by in sql; each bucket satisfies some criterion
+
+Bucket aggregations by field values
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"gender_bucket": {
+				"terms": {
+					"field": "gender"
+				}			
+			}
+		}
+	}'
+
+sum_other_doc_count - the sum of documents counts that are not part of the response
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"age_bucket": {
+				"terms": {
+					"field": "age"
+				}			
+			}
+		}
+	}'
+
+Document Counts are Approximate - Calculations aggregations across index shard can result in imperfections
+
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"age_ranges": {
+				"range": {
+					"field": "age",
+					"ranges": [
+						{"to": 30 },
+						{"from":30,"to":40},
+						{"from":40,"to":55},
+						{"from":55}
+					]
+				}			
+			}
+		}
+	}'
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"age_ranges": {
+				"range": {
+					"field": "age",
+					"keyed": true,
+					"ranges": [
+						{"to": 30 },
+						{"from":30,"to":40},
+						{"from":40,"to":55},
+						{"from":55}
+					]
+				}			
+			}
+		}
+	}'
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"age_ranges": {
+				"range": {
+					"field": "age",
+					"keyed": true,
+					"ranges": [
+						{"key":"young", "to": 30 },
+						{"key":"quarter-aged","from":30,"to":40},
+						{"key":"quarter-aged2","from":40,"to":55},
+						{"key":"quarter-aged3","from":55}
+					]
+				}			
+			}
+		}
+	}'
