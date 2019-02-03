@@ -119,3 +119,20 @@ bulk on the json file
 	curl -H 'Content-Type: application/json' -XPOST 'localhost:9200/customers/personal/_bulk?pretty&refresh' --data-binary @"customers.json"
 you don't need to create the index and type upfront
 
+### Setting up Fake Data for Queries
+
+https://www.json-generator.com/
+
+[
+'{{repeat(1000, 1000)}}',
+{
+name: '{{firstName()}} {{surname()}}',
+age: '{{integer(18,75)}}',
+gender: '{{gender()}}',
+email: '{{email()}}',
+phone: '+1 {{phone()}}',
+street: '{{integer(100, 999)}} {{street()}}',
+city: '{{city()}}',
+state: '{{state()}}, {{integer(100.1000)}}'
+}
+]
