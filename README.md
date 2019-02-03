@@ -395,3 +395,72 @@ How Elasticsearch can be used beyond search as an analytical engine
 - Pipeline - aggregations that work on the output of other aggregations
 
 Matrix and Pipeline are experimental and might change in the future releases.
+
+
+
+### Implementing Metric Aggregations
+
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"aggs": {
+			"avg_age": {
+				"avg": {
+					"field": "age"
+				}			
+			}
+		}
+	}'
+
+
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 1,
+		"aggs": {
+			"avg_age": {
+				"avg": {
+					"field": "age"
+				}			
+			}
+		}
+	}'
+
+
+
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 0,
+		"query": {
+			"bool": {
+				"filter": {
+					"match": {"state": "minessota"}
+				}
+			}
+		}
+		"aggs": {
+			"avg_age": {
+				"avg": {
+					"field": "age"
+				}			
+			}
+		}
+	}'
+
+
+	curl -XPOST 'localhost:9200/products/_search?pretty' -d'
+	{
+		"size": 1,
+		"aggs": {
+			"age_stats": {
+				"stats": {
+					"field": "age"
+				}			
+			}
+		}
+	}'
+
+
+
