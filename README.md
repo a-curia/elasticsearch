@@ -333,3 +333,55 @@ curl -XGET 'localhost:9200/products/_search?pretty' -d'
 {
 "query": {"bool": {"should":{"term":{"street":{"value":"ditmas", "boost":2.0}}}, {"term":{"street":{"value":"avenue"}}}}}
 }'
+
+### Search Using the Filter Context
+
+When queries run in the filter context, the documents in the result are not scored
+
+Each document responds yes/no to whether it should be included in the result
+
+	curl -XGET 'localhost:9200/products/_search?pretty' -d'
+	{
+		"query": {
+			"bool": {
+				"must": { "match_all": {}},
+				"filter": {
+					"range": {
+						"age": {
+							"gte": 20,
+							"lte": 30
+						}
+					}
+				}
+			}
+		}
+	}'
+
+we can use search queries along with a filter
+
+	curl -XGET 'localhost:9200/products/_search?pretty' -d'
+	{
+		"query": {
+			"bool": {
+				"must": { 
+					"match": {
+						"state": "alabama"
+					}
+				},
+				"filter": {
+					"term": {
+						"gender": "female"
+					},
+					"range": {
+						"age": {
+							"gte": 20
+						}
+					}
+				}
+			}
+		}
+	}'
+
+
+
+
