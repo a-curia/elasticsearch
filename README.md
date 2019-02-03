@@ -294,3 +294,27 @@ curl -XGET 'localhost:9200/products/_search?pretty' -d'
 }'
 
 Cutoff Frequency - terms with a frequency of >0.1% are common terms
+
+### Boolean Query
+
+Matches documents by combining multiple queries using boolean operators such as AND, OR
+
+must - the clause must appear in matching documents
+should - the clause may appear in matching documents but may not sometimes
+must_not - the clause must not appear in the document result
+filter - the clause must appear in results but results are not scored
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"bool": {"must":{"match":{"street":"ditmas"}}, {"match":{"street":"avenue"}}}}
+}'
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"bool": {"should":{"match":{"street":"ditmas"}}, {"match":{"street":"avenue"}}}}
+}'
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"bool": {"must_not":{"match":{"street":"ditmas"}}, {"match":{"street":"avenue"}}}}
+}'
