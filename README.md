@@ -383,5 +383,15 @@ we can use search queries along with a filter
 	}'
 
 
+### Executing Analytical Queries Through Aggregations : Types of Aggregations
 
+How Elasticsearch can be used beyond search as an analytical engine
 
+4 types of Aggregations:
+
+- Metric - aggregations over a set of documents; single or multiple values as a result; all documents in a search result; documents within a logical group
+- Bucketing - logically group documents based on search query; a document falls into a bucket if the criteria matches; each bucket associated with a key
+- Matrix - operates on multiple fields and produces a matrix result; every value from filed A might combine with value from field B
+- Pipeline - aggregations that work on the output of other aggregations
+
+Matrix and Pipeline are experimental and might change in the future releases.
