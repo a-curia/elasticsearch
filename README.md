@@ -136,3 +136,22 @@ city: '{{city()}}',
 state: '{{state()}}, {{integer(100.1000)}}'
 }
 ]
+
+delete and recreate the customer index from the customers_full.json file
+
+curl -XGET 'localhost:9200/_cat/indices?v&pretty'
+
+curl -XDELETE 'localhost:9200/customers'
+
+curl -H 'Content-Type: application/json' -XPOST 'localhost:9200/customers/personal/_bulk?pretty&refresh' --data-binary @"customers_full.json"
+
+the are 2 Contexts: Query Context(based on score) and Filter Context(exact or range matches)
+
+you can specify the query terms as:
+
+- search terms as URL query parameters
+- search terms within the URL request body
+
+Search Using Query Params
+
+curl -XGET 'localhost:9200/customers/_search?q=wyoming&pretty'
