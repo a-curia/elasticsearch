@@ -210,4 +210,37 @@ curl -XGET 'localhost:9200/products/_search?pretty' -d'
 
 Query params options are a subset of options available in the Request Body
 
+Source filtering to include only those fields that we're interested in
 
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"query": {"term": { "name": "gates" } }
+}
+
+Term Searches - term should have an exact match in the inverted index
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"_source": false,
+"query": {"term": { "name": "gates" } }
+}
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"_source": "st*",
+"query": {"term": { "name": "gates" } }
+}
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"_source": ["st*", "*n*"],
+"query": {"term": { "name": "gates" } }
+}
+
+No Change to Relevance Rankings - source filtering does not affect the relevance of documents
+
+curl -XGET 'localhost:9200/products/_search?pretty' -d'
+{
+"_source": {"includes":["st*", "*n*"], "excludes": ["*der"]},
+"query": {"term": { "name": "gates" } }
+}
